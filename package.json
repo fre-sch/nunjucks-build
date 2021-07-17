@@ -1,0 +1,15 @@
+{
+  "name": "nunjucks-build",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "nunjucks": "^3.2.3",
+    "dive": "^0.5.0"
+  },
+  "bin": "cli.js"
+}
