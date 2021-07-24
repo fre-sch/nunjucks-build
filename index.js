@@ -21,12 +21,13 @@ module.exports = (baseOutputDir, baseInputDir) => {
       return
     }
 
-    const templateFilePath = path.relative(baseInputDir, inputFilePath)
-    const outputDir = path.join(baseOutputDir, path.dirname(inputFilePath))
-    const outputFilePath = path.join(baseOutputDir, inputFilePath)
+    const relInputFilePath = path.relative(baseInputDir, inputFilePath)
+    const outputDir = path.join(baseOutputDir, path.dirname(relInputFilePath))
+    const outputFilePath = path.join(baseOutputDir, relInputFilePath)
+
     if (!fs.existsSync(outputDir))
       fs.mkdirSync(outputDir, {recursive: true})
-    render(templateFilePath)
+    render(relInputFilePath)
       .then(output => writeFile(outputFilePath, output))
       .catch(err => {
         console.error(`error rendering, attempting copy: ${err}`)
