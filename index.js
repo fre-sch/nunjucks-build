@@ -8,6 +8,7 @@ module.exports = (baseOutputDir, baseInputDir) => {
   nunjucks.configure(baseInputDir, {autoescape: true})
   render = util.promisify(nunjucks.render)
   writeFile = util.promisify(fs.writeFile)
+  copyFile = util.promisify(fs.copyFile)
 
   dive(baseInputDir, {files: true}, (err, inputFilePath, stat) => {
     if (err) {
@@ -27,6 +28,12 @@ module.exports = (baseOutputDir, baseInputDir) => {
       fs.mkdirSync(outputDir, {recursive: true})
     render(inputFilePath)
       .then(output => writeFile(outputFilePath, output))
-      .catch(err => console.error(`error rendering: ${err}`))
+      .catch(err => {
+        console.error(`error rendering, attempting copy: ${err}`)
+        return copyFile(inputFilePath, outputFilePath)
+      })
+      .catch(err => {
+        console.error(`error copying: ${err}`)
+      })
   })
 }
